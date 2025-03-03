@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Profile</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        {% if current_user.is_authenticated %}
+            <span class="username">{{ current_user.username }}</span>
+            <a href="/logout">Logout</a>
+            <a href="/profile">Profile</a>
+        {% else %}
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        {% endif %}
+    </div>
+    <div class="container">
+        <h1>Edit Profile</h1>
+        <form method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="{{ user.username }}"><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ user.email }}"><br>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" value="{{ user.age }}" min="0"><br>
+            <input type="submit" value="Update">
+        </form>
+        <a href="/profile" class="btn">Back to profile</a>
+    </div>
+</body>
+</html>

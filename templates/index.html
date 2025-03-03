@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ selected_category_name or "Всі публікації" }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        {% if current_user.is_authenticated %}
+            <span class="username">{{ current_user.username }}</span>
+            <a href="/logout">Logout</a>
+            <a href="/profile">Profile</a>
+        {% else %}
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        {% endif %}
+    </div>
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Filter by category:</h2>
+            <form method="get" action="/">
+                <input type="hidden" name="category" value="">
+                <button type="submit" class="filter-btn">Всі публікації</button>
+            </form>
+            {% for category in categories %}
+                <form method="get" action="/">
+                    <input type="hidden" name="category" value="{{ category.id }}">
+                    <button type="submit" class="filter-btn" {% if selected_category and selected_category == category.id %}style="background-color: #ff4500; color: #fff;"{% endif %}>{{ category.name }}</button>
+                </form>
+            {% endfor %}
+        </div>
+        <div class="container">
+            <h1>{{ selected_category_name or "Всі публікації" }}</h1>
+            <div class="posts">
+                {% for post in posts %}
+                    <div class="post">
+                        <p class="author">by {{ post.username }}</p>
+                        <h2 class="title">{{ post.title }}</h2>
+                        <p class="content">{{ post.content }}</p>
+                        {% if current_user.is_authenticated and post.author_id == current_user.id %}
+                            <form action="{{ url_for('edit_post', post_id=post.id) }}" method="get" style="display: inline;">
+                                <input type="submit" value="Edit Post">
+                            </form>
+                            <form action="{{ url_for('delete', post_id=post.id) }}" method="post" style="display: inline;">
+                                <input type="submit" value="Delete Post">
+                            </form>
+                        {% endif %}
+                        <form action="{{ url_for('post', post_id=post.id) }}" method="get" style="display: inline;">
+                            <input type="submit" value="Comment">
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+            {% if current_user.is_authenticated %}
+                <a href="/create" class="btn">Create a new post</a><br>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create a Post</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        {% if current_user.is_authenticated %}
+            <span class="username">{{ current_user.username }}</span>
+            <a href="/logout">Logout</a>
+            <a href="/profile">Profile</a>
+        {% else %}
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        {% endif %}
+    </div>
+    <div class="container">
+        <h1>Create a Post</h1>
+        <form method="post">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title"><br>
+            <label for="content">Content:</label>
+            <textarea id="content" name="content"></textarea><br>
+            <label for="category">Category:</label>
+            <select id="category" name="category">
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select><br>
+            <input type="submit" value="Create">
+        </form>
+        <a href="/" class="btn">Back to posts</a>
+    </div>
+</body>
+</html>

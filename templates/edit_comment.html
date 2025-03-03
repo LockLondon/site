@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Comment</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        {% if current_user.is_authenticated %}
+            <span class="username">{{ current_user.username }}</span>
+            <a href="/logout">Logout</a>
+            <a href="/profile">Profile</a>
+        {% else %}
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        {% endif %}
+    </div>
+    <div class="container">
+        <h1>Edit Comment</h1>
+        <form method="post">
+            <label for="content">Content:</label>
+            <textarea id="content" name="content">{{ comment.content }}</textarea><br>
+            <input type="submit" value="Update">
+        </form>
+        <a href="{{ url_for('post', post_id=comment.post_id) }}" class="btn">Back to post</a>
+    </div>
+</body>
+</html>
